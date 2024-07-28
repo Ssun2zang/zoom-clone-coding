@@ -20,12 +20,18 @@ const server = http.createServer(app);
 // http 서버 위에 ws 서버를 만듦
 const wss = new WebSocket.Server({server});
 
+const onSocketClose = () => {
+    console.log("Disconnected from the Browser ❌");
+}
+
+const onSocketMessage = (message) => {
+    console.log(message.toString());
+}
+
 wss.on("connection", (socket) => {
     console.log("Connected to Browser ✅")
-    socket.on("close", () => console.log("Disconnected from the Browser ❌"));
-    socket.on("message", (message) => {
-        console.log(message.toString());
-    });
+    socket.on("close", onSocketClose);
+    socket.on("message", onSocketMessage);
     socket.send("hello!!");
 });
 
