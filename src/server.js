@@ -24,14 +24,12 @@ const onSocketClose = () => {
     console.log("Disconnected from the Browser ❌");
 }
 
-const onSocketMessage = (message) => {
-    console.log(message.toString());
-}
-
 wss.on("connection", (socket) => {
     console.log("Connected to Browser ✅")
     socket.on("close", onSocketClose);
-    socket.on("message", onSocketMessage);
+    socket.on("message", (message) => {
+        socket.send(message.toString());
+    });
     socket.send("hello!!");
 });
 
